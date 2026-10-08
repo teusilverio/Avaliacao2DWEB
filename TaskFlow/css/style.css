@@ -1,44 +1,484 @@
+/* Estilos principais: cores, textos e espacamento da pagina. */
+:root {
+    /* Os botoes A+ e A- alteram este valor para ampliar a pagina. */
+    --tamanho-texto: 100%;
+    font-size: var(--tamanho-texto);
+    font-family: "Segoe UI", Arial, sans-serif;
+    color: #26332c;
+    background: #f4f7f2;
+    --verde: #245b46;
+    --verde-escuro: #194733;
+    --texto-suave: #536159;
+    --borda: #dce5dc;
+    --sombra: 0 12px 32px rgb(31 61 43 / 8%);
+}
+
 * {
     box-sizing: border-box;
 }
 
 body {
+    min-width: 320px;
     margin: 0;
-    font-family: Arial, sans-serif;
-    background: #f4f6f8;
-    color: #1f2937;
+    line-height: 1.5;
+    background:
+        radial-gradient(ellipse at 90% 0, #e3eee1 0, transparent 28rem),
+        #f4f7f2;
+}
+
+/* Limita a largura em telas grandes e deixa margem em telas pequenas. */
+.largura-pagina {
+    width: min(100% - 2rem, 1050px);
+    margin-inline: auto;
+}
+
+.cabecalho {
+    padding: 1.5rem 0;
+    background: linear-gradient(115deg, #194733, #34765a);
+    color: #fff;
+    box-shadow: 0 4px 18px rgb(25 71 51 / 14%);
+}
+
+.cabecalho h1,
+.cabecalho p,
+.rodape p {
+    margin: 0;
+}
+
+.cabecalho h1 {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    font-size: 1.8rem;
+    letter-spacing: -0.04em;
+}
+
+.cabecalho h1::before {
+    display: grid;
+    width: 2.35rem;
+    height: 2.35rem;
+    place-items: center;
+    border: 1px solid rgb(255 255 255 / 38%);
+    border-radius: 0.7rem;
+    background: rgb(255 255 255 / 12%);
+    content: "✓";
+}
+
+.cabecalho p {
+    color: #e2eee6;
+}
+
+.acessibilidade {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+}
+
+.botao-acessibilidade {
+    min-height: 2.5rem;
+    padding: 0.4rem 0.7rem;
+    border: 1px solid #fff;
+    border-radius: 0.35rem;
+    background: #fff;
+    color: #194733;
+    cursor: pointer;
+    font: inherit;
+    font-weight: 700;
+}
+
+#tamanho-atual {
+    color: #fff;
 }
 
 main {
-    width: min(100% - 2rem, 1000px);
-    margin: 0 auto;
+    display: grid;
+    padding-block: clamp(1.5rem, 4vw, 2.75rem);
+    gap: 1.25rem;
 }
 
-section {
-    background: white;
-    padding: 1.5rem;
-    margin-bottom: 1.5rem;
-    border-radius: 12px;
+.cartao {
+    min-width: 0;
+    padding: clamp(1.2rem, 3vw, 1.7rem);
+    border: 1px solid rgb(36 91 70 / 9%);
+    border-radius: 1rem;
+    background: #fff;
+    box-shadow: var(--sombra);
 }
 
-input,
-textarea,
-select,
-button {
+h2 {
+    margin: 0 0 1rem;
+    font-size: 1.25rem;
+}
+
+/* Os campos ficam um abaixo do outro no celular. */
+#formulario-tarefa,
+.campo {
+    display: grid;
+    gap: 0.5rem;
+}
+
+#formulario-tarefa {
+    gap: 1rem;
+}
+
+.campo label {
+    font-weight: 700;
+}
+
+.campo input,
+.campo textarea,
+.campo select {
     width: 100%;
-    padding: 0.75rem;
+    min-height: 2.75rem;
+    padding: 0.65rem;
+    border: 1px solid #b9c7bc;
+    border-radius: 0.55rem;
+    background: #fff;
+    color: inherit;
+    font: inherit;
+    transition: border-color 150ms ease, box-shadow 150ms ease;
+}
+
+.campo input:focus,
+.campo textarea:focus,
+.campo select:focus,
+.formulario-edicao input:focus,
+.formulario-edicao textarea:focus,
+.formulario-edicao select:focus {
+    border-color: var(--verde);
+    box-shadow: 0 0 0 3px rgb(36 91 70 / 12%);
+    outline: none;
+}
+
+.campo textarea {
+    resize: vertical;
+}
+
+/* Os botoes grandes sao mais simples de acionar com o dedo. */
+.botao,
+.botao-filtro,
+.botao-acao {
+    min-height: 2.75rem;
+    padding: 0.6rem 0.85rem;
+    border: 1px solid var(--verde);
+    border-radius: 0.55rem;
+    background: #fff;
+    color: var(--verde-escuro);
+    cursor: pointer;
+    font: inherit;
+    font-weight: 700;
+    transition: background-color 150ms ease, transform 150ms ease;
+}
+
+.botao-principal {
+    background: var(--verde);
+    color: #fff;
+}
+
+.botao:hover,
+.botao-filtro:hover,
+.botao-acao:hover {
+    background: #e8f1eb;
+}
+
+.botao-principal:hover {
+    transform: translateY(-1px);
+    background: var(--verde-escuro);
+}
+
+/* Deixa claro qual campo esta selecionado ao usar Tab no teclado. */
+:focus-visible {
+    outline: 3px solid #b64b20;
+    outline-offset: 2px;
+}
+
+.pular-conteudo {
+    position: absolute;
+    top: -5rem;
+    left: 1rem;
+    padding: 0.7rem;
+    background: #fff;
+    color: #17251c;
+}
+
+.pular-conteudo:focus {
+    top: 1rem;
+}
+
+.mensagem-erro {
+    min-height: 1.2rem;
+    margin: 0;
+    color: #9c2f20;
+}
+
+.cabecalho-lista {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.5rem;
+}
+
+.cabecalho-lista h2,
+#resumo-tarefas {
+    margin: 0;
+}
+
+.cabecalho-lista h2 {
+    margin-bottom: 0;
+}
+
+#resumo-tarefas {
+    color: var(--texto-suave);
+    font-size: 0.9rem;
+}
+
+.filtros {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-block: 1rem;
+}
+
+.botao-filtro.ativo {
+    background: var(--verde);
+    color: #fff;
+}
+
+.lista-tarefas {
+    display: grid;
+    margin: 0;
+    padding: 0;
+    gap: 0.75rem;
+    list-style: none;
+}
+
+.tarefa,
+.lista-vazia {
+    padding: 1rem;
+    border: 1px solid var(--borda);
+    border-radius: 0.75rem;
+    background: #fff;
+}
+
+.tarefa {
+    transition: border-color 150ms ease, box-shadow 150ms ease;
+}
+
+.tarefa:hover {
+    border-color: #a9c3ae;
+    box-shadow: 0 5px 16px rgb(31 61 43 / 6%);
+}
+
+.tarefa h3,
+.tarefa p {
+    margin: 0;
+}
+
+.tarefa h3 {
+    font-size: 1rem;
+}
+
+.descricao-tarefa {
+    margin-top: 0.35rem !important;
+    color: var(--texto-suave);
+    white-space: pre-wrap;
+}
+
+.tarefa.concluida h3 {
+    color: #536159;
+    text-decoration: line-through;
+}
+
+.prioridade {
+    display: inline-block;
+    margin-top: 0.65rem;
+    padding: 0.15rem 0.5rem;
+    border-radius: 0.3rem;
+    background: #e8f1eb;
+    color: #214d3d;
+    font-size: 0.85rem;
+}
+
+.prioridade-alta {
+    background: #f9e6e2;
+    color: #842b1c;
+}
+
+.prioridade-media {
+    background: #fff1d6;
+    color: #684400;
+}
+
+.botoes-tarefa,
+.botoes-edicao {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 0.8rem;
+}
+
+.botao-excluir {
+    border-color: #9c2f20;
+    color: #842b1c;
+}
+
+.botao-excluir:hover,
+.botao-perigo:hover {
+    background: #f9e6e2;
+}
+
+.formulario-edicao {
+    display: grid;
+    gap: 0.75rem;
+}
+
+.formulario-edicao label {
+    font-weight: 700;
+}
+
+.formulario-edicao input,
+.formulario-edicao textarea,
+.formulario-edicao select {
+    width: 100%;
+    min-height: 2.6rem;
+    padding: 0.6rem;
+    border: 1px solid #aebbb1;
+    border-radius: 0.4rem;
     font: inherit;
 }
 
-button {
-    cursor: pointer;
+.rodape {
+    padding: 0.5rem 1rem 1.5rem;
+    color: #536159;
+    text-align: center;
 }
 
+.leitor-tela {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+}
 
-@media (min-width: 768px) {
-    #task-form {
-        display: grid;
-        grid-template-columns: 2fr 1fr;
-        gap: 1rem;
+.dialogo-confirmacao {
+    width: min(100% - 2rem, 28rem);
+    padding: 1.6rem;
+    border: 1px solid var(--borda);
+    border-radius: 1rem;
+    background: #fff;
+    color: #26332c;
+    box-shadow: 0 24px 80px rgb(15 35 23 / 24%);
+}
+
+.dialogo-confirmacao::backdrop {
+    background: rgb(17 32 23 / 58%);
+    backdrop-filter: blur(3px);
+}
+
+.icone-alerta {
+    display: grid;
+    width: 2.5rem;
+    height: 2.5rem;
+    margin-bottom: 0.85rem;
+    place-items: center;
+    border-radius: 50%;
+    background: #f9e6e2;
+    color: #842b1c;
+    font-size: 1.25rem;
+    font-weight: 800;
+}
+
+.dialogo-confirmacao h2 {
+    margin-bottom: 0.4rem;
+}
+
+.dialogo-confirmacao p {
+    margin: 0;
+    color: var(--texto-suave);
+}
+
+.botoes-confirmacao {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 0.65rem;
+    margin-top: 1.4rem;
+}
+
+.botao-cancelar {
+    border-color: var(--borda);
+    color: #26332c;
+}
+
+.botao-perigo {
+    border-color: #9c2f20;
+    background: #9c2f20;
+    color: #fff;
+}
+
+.botao-perigo:hover {
+    background: #842719;
+    color: #fff;
+}
+
+/* Contraste alto usa preto e branco para deixar os elementos bem definidos. */
+html.alto-contraste,
+html.alto-contraste body {
+    background: #fff;
+    color: #000;
+}
+
+html.alto-contraste body * {
+    border-color: #000 !important;
+    box-shadow: none !important;
+    color: #000 !important;
+}
+
+html.alto-contraste .cabecalho,
+html.alto-contraste .cabecalho *,
+html.alto-contraste .botao-principal,
+html.alto-contraste .botao-filtro.ativo {
+    background: #000 !important;
+    color: #fff !important;
+}
+
+html.alto-contraste .cartao,
+html.alto-contraste .tarefa,
+html.alto-contraste .lista-vazia,
+html.alto-contraste .dialogo-confirmacao,
+html.alto-contraste input,
+html.alto-contraste textarea,
+html.alto-contraste select,
+html.alto-contraste button {
+    background: #fff;
+}
+
+html.alto-contraste .botao-acessibilidade {
+    border-color: #fff !important;
+}
+
+html.alto-contraste .botao-perigo {
+    background: #000 !important;
+    color: #fff !important;
+}
+
+html.alto-contraste :focus-visible {
+    outline: 4px solid #ff0;
+    outline-offset: 3px;
+}
+
+/* Respeita quem prefere menos animacoes na pagina. */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
     }
 }

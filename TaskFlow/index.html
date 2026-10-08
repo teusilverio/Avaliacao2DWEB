@@ -1,73 +1,113 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
+    <!-- Informacoes basicas para o navegador e os leitores de tela. -->
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <!-- Link para o arquivo CSS externo -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Minhas tarefas — TaskFlow</title>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <script type="module" src="js/main.js"></script>
 </head>
 <body>
-    <header>
-        <h1>TaskFlow</h1>
-        <p>Organize suas tarefas de forma simples.</p>
+    <!-- Atalho para pular o cabecalho usando o teclado. -->
+    <a class="pular-conteudo" href="#conteudo">Pular para as tarefas</a>
+
+    <header class="cabecalho">
+        <div class="largura-pagina">
+            <h1>TaskFlow</h1>
+            <p>Uma lista simples para organizar o seu dia.</p>
+            <!-- Controles opcionais para aumentar o texto e mudar o contraste. -->
+            <div class="acessibilidade" role="group" aria-label="Opções de acessibilidade">
+                <button class="botao-acessibilidade" id="diminuir-texto" type="button" aria-label="Diminuir o texto">
+                    A−
+                </button>
+                <span id="tamanho-atual" aria-live="polite">Texto: 100%</span>
+                <button class="botao-acessibilidade" id="aumentar-texto" type="button" aria-label="Aumentar o texto">
+                    A+
+                </button>
+                <button
+                    class="botao-acessibilidade"
+                    id="alternar-contraste"
+                    type="button"
+                    aria-pressed="false"
+                >
+                    Alto contraste: desligado
+                </button>
+            </div>
+        </div>
     </header>
-    
-    <main>
-        <section aria-labelledby="nova-tarefa">
-            <h2 id="nova-tarefa">Nova tarefa</h2>
-    
-            <form id="task-form">
-                <div>
-                    <label for="task-title">Título</label>
-                    <input
-                        type="text"
-                        id="task-title"
-                        name="title"
+
+    <main class="largura-pagina" id="conteudo">
+        <!-- O formulario usa rotulos ligados aos campos para facilitar o uso. -->
+        <section class="cartao" aria-labelledby="titulo-formulario">
+            <h2 id="titulo-formulario">Adicionar uma tarefa</h2>
+            <form id="formulario-tarefa">
+                <div class="campo">
+                    <label for="campo-titulo">Tarefa</label>
+                    <input id="campo-titulo" name="titulo" type="text" maxlength="80" required>
+                </div>
+
+                <div class="campo">
+                    <label for="campo-descricao">Descrição (opcional)</label>
+                    <textarea id="campo-descricao" name="descricao" rows="3" maxlength="240"></textarea>
+                </div>
+
+                <div class="campo">
+                    <label for="campo-prioridade">Prioridade</label>
+                    <select
+                        id="campo-prioridade"
+                        name="prioridade"
+                        aria-describedby="erro-prioridade"
                         required
                     >
-                </div>
-    
-                <div>
-                    <label for="task-description">Descrição</label>
-                    <textarea
-                        id="task-description"
-                        name="description"
-                    ></textarea>
-                </div>
-    
-                <div>
-                    <label for="task-priority">Prioridade</label>
-    
-                    <select id="task-priority" name="priority">
-                        <option value="low">Baixa</option>
-                        <option value="medium">Média</option>
-                        <option value="high">Alta</option>
+                        <option value="" selected disabled>Selecione uma prioridade</option>
+                        <option value="baixa">Baixa</option>
+                        <option value="media">Média</option>
+                        <option value="alta">Alta</option>
                     </select>
+                    <p class="mensagem-erro" id="erro-prioridade"></p>
                 </div>
-    
-                <button type="submit">
-                    Adicionar tarefa
-                </button>
+
+                <button class="botao botao-principal" type="submit">Adicionar tarefa</button>
             </form>
         </section>
-    
-        <section aria-labelledby="minhas-tarefas">
-            <h2 id="minhas-tarefas">Minhas tarefas</h2>
-    
-            <div id="task-filters">
-                <button type="button">Todas</button>
-                <button type="button">Pendentes</button>
-                <button type="button">Concluídas</button>
+
+        <!-- Filtros e tarefas aparecem nesta lista, atualizada pelo JavaScript. -->
+        <section class="cartao" aria-labelledby="titulo-lista">
+            <div class="cabecalho-lista">
+                <h2 id="titulo-lista">Minhas tarefas</h2>
+                <p id="resumo-tarefas">Nenhuma tarefa ainda</p>
             </div>
-    
-            <ul id="task-list">
-            </ul>
+
+            <div class="filtros" id="botoes-filtro" role="group" aria-label="Filtrar tarefas">
+                <button class="botao-filtro ativo" type="button" data-filtro="todas" aria-pressed="true">Todas</button>
+                <button class="botao-filtro" type="button" data-filtro="pendentes" aria-pressed="false">Pendentes</button>
+                <button class="botao-filtro" type="button" data-filtro="concluidas" aria-pressed="false">Concluídas</button>
+            </div>
+
+            <ul class="lista-tarefas" id="lista-tarefas" aria-label="Tarefas" tabindex="-1"></ul>
+            <p class="leitor-tela" id="mensagem" role="status" aria-live="polite"></p>
         </section>
     </main>
-    
-    <footer>
-        <p>TaskFlow — Projeto Front-End</p>
+
+    <!-- A tarefa so e removida depois que a pessoa confirma nesta caixa. -->
+    <dialog class="dialogo-confirmacao" id="dialogo-exclusao" aria-labelledby="titulo-confirmacao">
+        <div class="icone-alerta" aria-hidden="true">!</div>
+        <h2 id="titulo-confirmacao">Excluir esta tarefa?</h2>
+        <p id="texto-confirmacao">Esta ação não pode ser desfeita.</p>
+        <div class="botoes-confirmacao">
+            <button class="botao botao-cancelar" id="cancelar-exclusao" type="button" autofocus>
+                Manter tarefa
+            </button>
+            <button class="botao botao-perigo" id="confirmar-exclusao" type="button">
+                Sim, excluir
+            </button>
+        </div>
+    </dialog>
+
+    <footer class="rodape">
+        <p>TaskFlow - Projeto de estudo</p>
     </footer>
 </body>
 </html>
