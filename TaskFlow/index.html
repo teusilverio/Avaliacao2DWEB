@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- Link para o arquivo CSS externo -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header>
+        <h1>TaskFlow</h1>
+        <p>Organize suas tarefas de forma simples.</p>
+    </header>
+    
+    <main>
+        <section aria-labelledby="nova-tarefa">
+            <h2 id="nova-tarefa">Nova tarefa</h2>
+    
+            <form id="task-form">
+                <div>
+                    <label for="task-title">Título</label>
+                    <input
+                        type="text"
+                        id="task-title"
+                        name="title"
+                        required
+                    >
+                </div>
+    
+                <div>
+                    <label for="task-description">Descrição</label>
+                    <textarea
+                        id="task-description"
+                        name="description"
+                    ></textarea>
+                </div>
+    
+                <div>
+                    <label for="task-priority">Prioridade</label>
+    
+                    <select id="task-priority" name="priority">
+                        <option value="low">Baixa</option>
+                        <option value="medium">Média</option>
+                        <option value="high">Alta</option>
+                    </select>
+                </div>
+    
+                <button type="submit">
+                    Adicionar tarefa
+                </button>
+            </form>
+        </section>
+    
+        <section aria-labelledby="minhas-tarefas">
+            <h2 id="minhas-tarefas">Minhas tarefas</h2>
+    
+            <div id="task-filters">
+                <button type="button">Todas</button>
+                <button type="button">Pendentes</button>
+                <button type="button">Concluídas</button>
+            </div>
+    
+            <ul id="task-list">
+            </ul>
+        </section>
+    </main>
+    
+    <footer>
+        <p>TaskFlow — Projeto Front-End</p>
+    </footer>
+</body>
+</html>
